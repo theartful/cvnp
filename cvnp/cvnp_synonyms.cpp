@@ -22,7 +22,7 @@ namespace cvnp
     };
 
 
-    static int sColumnWidth = 12;
+    static size_t sColumnWidth = 12;
 
     static std::string align_center(const std::string& s)
     {

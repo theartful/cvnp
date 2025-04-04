@@ -4,7 +4,6 @@
 #include <opencv2/core/core.hpp>
 #include <pybind11/numpy.h>
 
-#include <iostream>
 #include <stdexcept>
 #include <vector>
 #include <stdlib.h>
@@ -57,12 +56,12 @@ namespace cvnp
     template<typename _Tp, int _rows, int _cols>
     void nparray_to_matx(pybind11::array &a, cv::Matx<_Tp, _rows, _cols>& out_matrix)
     {
-        size_t mat_size = (size_t)(_rows * _cols);
+        ssize_t mat_size = (size_t)(_rows * _cols);
         if (a.size() != mat_size)
             throw std::runtime_error("Bad size");
 
         _Tp* arrayValues = (_Tp*) a.data(0);
-        for (size_t i = 0; i < mat_size; ++i)
+        for (ssize_t i = 0; i < mat_size; ++i)
             out_matrix.val[i] = arrayValues[i];
     }
 } // namespace cvnp
@@ -112,7 +111,7 @@ namespace pybind11
              * (for ``return_value_policy::reference_internal``) and are generally
              * ignored by implicit casters.
              */
-            static handle cast(const cv::Mat &m, return_value_policy, handle defval)
+            static handle cast(const cv::Mat &m, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto a = cvnp::mat_to_nparray(m);
                 return a.release();
@@ -154,7 +153,7 @@ namespace pybind11
              * (for ``return_value_policy::reference_internal``) and are generally
              * ignored by implicit casters.
              */
-            static handle cast(const MatTp &m, return_value_policy, handle defval)
+            static handle cast(const MatTp &m, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto a = cvnp::mat_to_nparray(m);
                 return a.release();
@@ -185,7 +184,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python)
-            static handle cast(const Matxxx &m, return_value_policy, handle defval)
+            static handle cast(const Matxxx &m, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto a = cvnp::matx_to_nparray<_Tp, _rows, _cols>(m);
                 return a.release();
@@ -215,7 +214,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python)
-            static handle cast(const Vecxxx &m, return_value_policy, handle defval)
+            static handle cast(const Vecxxx &m, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto a = cvnp::matx_to_nparray<_Tp, _rows, 1>(m);
                 return a.release();
@@ -255,7 +254,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python, i.e Size -> tuple)
-            static handle cast(const SizeTp &value, return_value_policy, handle defval)
+            static handle cast(const SizeTp &value, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto result = pybind11::make_tuple(value.width, value.height);
                 return result.release();
@@ -295,7 +294,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python)
-            static handle cast(const PointTp &value, return_value_policy, handle defval)
+            static handle cast(const PointTp &value, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto result = pybind11::make_tuple(value.x, value.y);
                 return result.release();
@@ -335,7 +334,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python)
-            static handle cast(const PointTp &value, return_value_policy, handle defval)
+            static handle cast(const PointTp &value, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto result = pybind11::make_tuple(value.x, value.y, value.z);
                 return result.release();
@@ -380,7 +379,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python)
-            static handle cast(const ScalarTp &value, return_value_policy, handle defval)
+            static handle cast(const ScalarTp &value, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto result = pybind11::make_tuple(value[0], value[1], value[2], value[3]);
                 return result.release();
@@ -421,7 +420,7 @@ namespace pybind11
             }
 
             // Conversion part 2 (C++ -> Python)
-            static handle cast(const RectTp &value, return_value_policy, handle defval)
+            static handle cast(const RectTp &value, return_value_policy, [[maybe_unused]] handle defval)
             {
                 auto result = pybind11::make_tuple(value.x, value.y, value.width, value.height);
                 return result.release();

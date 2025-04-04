@@ -43,13 +43,13 @@ namespace cvnp
                 m.allocator = &instance;
             }
 
-            cv::UMatData* allocate(int dims0, const int* sizes, int type, void* data, size_t* step, cv::AccessFlag flags, cv::UMatUsageFlags usageFlags) const override
+            cv::UMatData* allocate([[maybe_unused]] int dims0, [[maybe_unused]] const int* sizes, [[maybe_unused]] int type, [[maybe_unused]] void* data, [[maybe_unused]] size_t* step, [[maybe_unused]] cv::AccessFlag flags, [[maybe_unused]] cv::UMatUsageFlags usageFlags) const override
             {
                 throw py::value_error("CvnpAllocator::allocate \"standard\" should never happen");
                 // return stdAllocator->allocate(dims0, sizes, type, data, step, flags, usageFlags);
             }
 
-            bool allocate(cv::UMatData* u, cv::AccessFlag accessFlags, cv::UMatUsageFlags usageFlags) const override
+            bool allocate([[maybe_unused]] cv::UMatData* u, [[maybe_unused]] cv::AccessFlag accessFlags, [[maybe_unused]] cv::UMatUsageFlags usageFlags) const override
             {
                 throw py::value_error("CvnpAllocator::allocate \"copy\" should never happen");
                 // return stdAllocator->allocate(u, accessFlags, usageFlags);
@@ -207,6 +207,7 @@ namespace cvnp
         return m;
     }
 
+#if 0
     // this version tries to handle strides and sub-matrices
     // this is WIP, currently broken, and not used
     cv::Mat nparray_to_mat_with_strides_broken(pybind11::array& a)
@@ -238,5 +239,6 @@ namespace cvnp
         cv::Mat m(sizes, type, a.mutable_data(0), strides.data());
         return m;
     }
+#endif
 
 } // namespace cvnp
