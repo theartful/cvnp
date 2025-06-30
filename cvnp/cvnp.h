@@ -56,12 +56,12 @@ namespace cvnp
     template<typename _Tp, int _rows, int _cols>
     void nparray_to_matx(pybind11::array &a, cv::Matx<_Tp, _rows, _cols>& out_matrix)
     {
-        ssize_t mat_size = (size_t)(_rows * _cols);
-        if (a.size() != mat_size)
+        size_t mat_size = (size_t)(_rows * _cols);
+        if (static_cast<size_t>(a.size()) != mat_size)
             throw std::runtime_error("Bad size");
 
         _Tp* arrayValues = (_Tp*) a.data(0);
-        for (ssize_t i = 0; i < mat_size; ++i)
+        for (size_t i = 0; i < mat_size; ++i)
             out_matrix.val[i] = arrayValues[i];
     }
 } // namespace cvnp
